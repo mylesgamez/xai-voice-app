@@ -1,8 +1,28 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
+  import { browser } from '$app/environment';
+  import { checkUserAuth } from '$lib/api';
+
   let phoneNumber = $state('');
   let isLoading = $state(false);
+  let checkingAuth = $state(true);
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
+  onMount(async () => {
+    if (browser) {
+      const phone = localStorage.getItem('phoneNumber');
+      if (phone) {
+        const auth = await checkUserAuth(phone);
+        if (auth.authenticated) {
+          goto('/chats');
+          return;
+        }
+      }
+    }
+    checkingAuth = false;
+  });
 
   function connectX() {
     if (!phoneNumber) {
@@ -25,6 +45,11 @@
   }
 </script>
 
+{#if checkingAuth}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black">
+  <div class="text-white">Loading...</div>
+</div>
+{:else}
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black">
   <div class="w-full max-w-md p-8 bg-gray-800 rounded-2xl shadow-2xl border border-gray-700">
     <div class="text-center mb-8">
@@ -96,3 +121,4 @@
     </div>
   </div>
 </div>
+{/if}

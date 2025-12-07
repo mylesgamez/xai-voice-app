@@ -6,5 +6,6 @@
 	"/chats/[id]": [
 		"src/routes/chats/[id]/+page.ts"
 	],
-	"/dashboard": []
+	"/dashboard": [],
+	"/profile": []
 }

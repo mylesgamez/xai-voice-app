@@ -10,14 +10,15 @@ return {
 	assets: new Set([]),
 	mimeTypes: {},
 	_: {
-		client: {start:"_app/immutable/entry/start.DRj2SphJ.js",app:"_app/immutable/entry/app.BNoR1gmV.js",imports:["_app/immutable/entry/start.DRj2SphJ.js","_app/immutable/chunks/l-5YitvB.js","_app/immutable/chunks/DaFqHzVn.js","_app/immutable/chunks/ehTGNA6n.js","_app/immutable/entry/app.BNoR1gmV.js","_app/immutable/chunks/DaFqHzVn.js","_app/immutable/chunks/CiEvsBQu.js","_app/immutable/chunks/DmLb38fm.js","_app/immutable/chunks/3IAQgkcG.js","_app/immutable/chunks/ehTGNA6n.js","_app/immutable/chunks/CdKW0PxI.js","_app/immutable/chunks/9eNt1_m9.js","_app/immutable/chunks/DVB_Lmvf.js","_app/immutable/chunks/0uibvxPT.js","_app/immutable/chunks/BeFkd0eD.js","_app/immutable/chunks/D7heD2Hx.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
+		client: {start:"_app/immutable/entry/start.D9xX-oqT.js",app:"_app/immutable/entry/app.BWWElfXt.js",imports:["_app/immutable/entry/start.D9xX-oqT.js","_app/immutable/chunks/JhTlYO8B.js","_app/immutable/chunks/B2myL-Op.js","_app/immutable/chunks/PI8fN_LJ.js","_app/immutable/entry/app.BWWElfXt.js","_app/immutable/chunks/B2myL-Op.js","_app/immutable/chunks/D5IRr4dr.js","_app/immutable/chunks/9WhkDaYY.js","_app/immutable/chunks/CtvB_Hsv.js","_app/immutable/chunks/PI8fN_LJ.js","_app/immutable/chunks/BStlHI7h.js","_app/immutable/chunks/BbXXwbeS.js","_app/immutable/chunks/BN94MnuU.js","_app/immutable/chunks/BPtYs5MB.js","_app/immutable/chunks/CKWyjOcI.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
 		nodes: [
 			__memo(() => import('./nodes/0.js')),
 			__memo(() => import('./nodes/1.js')),
 			__memo(() => import('./nodes/2.js')),
 			__memo(() => import('./nodes/3.js')),
 			__memo(() => import('./nodes/4.js')),
-			__memo(() => import('./nodes/5.js'))
+			__memo(() => import('./nodes/5.js')),
+			__memo(() => import('./nodes/6.js'))
 		],
 		remotes: {
 			
@@ -49,6 +50,13 @@ return {
 				pattern: /^\/dashboard\/?$/,
 				params: [],
 				page: { layouts: [0,], errors: [1,], leaf: 5 },
+				endpoint: null
+			},
+			{
+				id: "/profile",
+				pattern: /^\/profile\/?$/,
+				params: [],
+				page: { layouts: [0,], errors: [1,], leaf: 6 },
 				endpoint: null
 			}
 		],

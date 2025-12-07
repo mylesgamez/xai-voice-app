@@ -27,7 +27,7 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/chats" | "/chats/[id]" | "/dashboard";
+		RouteId(): "/" | "/chats" | "/chats/[id]" | "/dashboard" | "/profile";
 		RouteParams(): {
 			"/chats/[id]": { id: string }
 		};
@@ -35,9 +35,10 @@ declare module "$app/types" {
 			"/": { id?: string };
 			"/chats": { id?: string };
 			"/chats/[id]": { id: string };
-			"/dashboard": Record<string, never>
+			"/dashboard": Record<string, never>;
+			"/profile": Record<string, never>
 		};
-		Pathname(): "/" | "/chats" | "/chats/" | `/chats/${string}` & {} | `/chats/${string}/` & {} | "/dashboard" | "/dashboard/";
+		Pathname(): "/" | "/chats" | "/chats/" | `/chats/${string}` & {} | `/chats/${string}/` & {} | "/dashboard" | "/dashboard/" | "/profile" | "/profile/";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): string & {};
 	}

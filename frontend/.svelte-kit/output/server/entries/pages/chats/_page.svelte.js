@@ -1,61 +1,9 @@
-import { U as attributes, V as ensure_array_like } from "../../../chunks/index2.js";
+import { _ as ensure_array_like } from "../../../chunks/index2.js";
 import { g as goto } from "../../../chunks/client.js";
-import { c as cn, B as Button } from "../../../chunks/button.js";
-import { c as clsx } from "../../../chunks/attributes.js";
+import { C as Card, a as Card_content, b as Card_header, c as Card_title, d as Card_description } from "../../../chunks/card-title.js";
 import "clsx";
-import { e as escape_html } from "../../../chunks/escaping.js";
-function Card($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    let { class: className, children, $$slots, $$events, ...restProps } = $$props;
-    $$renderer2.push(`<div${attributes({
-      class: clsx(cn("rounded-lg border bg-card text-card-foreground shadow-sm", className)),
-      ...restProps
-    })}>`);
-    children?.($$renderer2);
-    $$renderer2.push(`<!----></div>`);
-  });
-}
-function Card_content($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    let { class: className, children, $$slots, $$events, ...restProps } = $$props;
-    $$renderer2.push(`<div${attributes({ class: clsx(cn("p-6 pt-0", className)), ...restProps })}>`);
-    children?.($$renderer2);
-    $$renderer2.push(`<!----></div>`);
-  });
-}
-function Card_description($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    let { class: className, children, $$slots, $$events, ...restProps } = $$props;
-    $$renderer2.push(`<p${attributes({
-      class: clsx(cn("text-sm text-muted-foreground", className)),
-      ...restProps
-    })}>`);
-    children?.($$renderer2);
-    $$renderer2.push(`<!----></p>`);
-  });
-}
-function Card_header($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    let { class: className, children, $$slots, $$events, ...restProps } = $$props;
-    $$renderer2.push(`<div${attributes({
-      class: clsx(cn("flex flex-col space-y-1.5 p-6", className)),
-      ...restProps
-    })}>`);
-    children?.($$renderer2);
-    $$renderer2.push(`<!----></div>`);
-  });
-}
-function Card_title($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    let { class: className, children, $$slots, $$events, ...restProps } = $$props;
-    $$renderer2.push(`<h3${attributes({
-      class: clsx(cn("text-2xl font-semibold leading-none tracking-tight", className)),
-      ...restProps
-    })}>`);
-    children?.($$renderer2);
-    $$renderer2.push(`<!----></h3>`);
-  });
-}
+import { B as Button } from "../../../chunks/button.js";
+import { e as escape_html } from "../../../chunks/context.js";
 function _page($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     let { data } = $$props;
@@ -80,16 +28,7 @@ function _page($$renderer, $$props) {
       if (text.length <= maxLength) return text;
       return text.slice(0, maxLength) + "...";
     }
-    $$renderer2.push(`<div class="min-h-screen bg-background"><div class="container max-w-2xl py-8"><div class="mb-6 flex items-center justify-between"><h1 class="text-2xl font-bold">Conversations</h1> `);
-    Button($$renderer2, {
-      href: "/dashboard",
-      variant: "outline",
-      children: ($$renderer3) => {
-        $$renderer3.push(`<!---->Back to Dashboard`);
-      },
-      $$slots: { default: true }
-    });
-    $$renderer2.push(`<!----></div> `);
+    $$renderer2.push(`<div class="min-h-screen bg-background"><div class="container max-w-2xl py-8 px-4"><div class="mb-6"><h1 class="text-2xl font-bold">Conversations</h1></div> `);
     if (!data.phoneNumber) {
       $$renderer2.push("<!--[-->");
       $$renderer2.push(`<!---->`);
@@ -101,10 +40,10 @@ function _page($$renderer, $$props) {
             children: ($$renderer4) => {
               $$renderer4.push(`<p class="text-muted-foreground">Please connect your phone number first.</p> `);
               Button($$renderer4, {
-                href: "/dashboard",
+                href: "/profile",
                 class: "mt-4",
                 children: ($$renderer5) => {
-                  $$renderer5.push(`<!---->Go to Dashboard`);
+                  $$renderer5.push(`<!---->Go to Profile`);
                 },
                 $$slots: { default: true }
               });
@@ -130,10 +69,10 @@ function _page($$renderer, $$props) {
               children: ($$renderer4) => {
                 $$renderer4.push(`<p class="text-muted-foreground">No conversations yet. Make a phone call to start!</p> `);
                 Button($$renderer4, {
-                  href: "/dashboard",
+                  href: "/profile",
                   class: "mt-4",
                   children: ($$renderer5) => {
-                    $$renderer5.push(`<!---->Go to Dashboard`);
+                    $$renderer5.push(`<!---->View Profile`);
                   },
                   $$slots: { default: true }
                 });

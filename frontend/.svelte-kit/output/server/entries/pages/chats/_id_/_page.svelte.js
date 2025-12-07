@@ -1,33 +1,9 @@
-import { U as attributes, W as bind_props, V as ensure_array_like, X as attr_class, Y as stringify } from "../../../../chunks/index2.js";
+import { W as attributes, X as clsx, _ as ensure_array_like, $ as attr_class, V as stringify } from "../../../../chunks/index2.js";
 import { g as goto } from "../../../../chunks/client.js";
-import { c as cn, B as Button } from "../../../../chunks/button.js";
-import { c as clsx } from "../../../../chunks/attributes.js";
-import { e as escape_html } from "../../../../chunks/escaping.js";
-function Input($$renderer, $$props) {
-  $$renderer.component(($$renderer2) => {
-    let {
-      class: className,
-      value = "",
-      type = "text",
-      $$slots,
-      $$events,
-      ...restProps
-    } = $$props;
-    $$renderer2.push(`<input${attributes(
-      {
-        type,
-        value,
-        class: clsx(cn("flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50", className)),
-        ...restProps
-      },
-      void 0,
-      void 0,
-      void 0,
-      4
-    )}/>`);
-    bind_props($$props, { value });
-  });
-}
+import { B as Button } from "../../../../chunks/button.js";
+import { I as Input } from "../../../../chunks/input.js";
+import { c as cn } from "../../../../chunks/index3.js";
+import { e as escape_html } from "../../../../chunks/context.js";
 function Scroll_area($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     let { class: className, children, $$slots, $$events, ...restProps } = $$props;

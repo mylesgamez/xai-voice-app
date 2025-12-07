@@ -1,11 +1,6 @@
-import { U as attributes } from "./index2.js";
-import { clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { W as attributes, X as clsx } from "./index2.js";
+import { c as cn } from "./index3.js";
 import { tv } from "tailwind-variants";
-import { c as clsx$1 } from "./attributes.js";
-function cn(...inputs) {
-  return twMerge(clsx(inputs));
-}
 const buttonVariants = tv({
   base: "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   variants: {
@@ -44,7 +39,7 @@ function Button($$renderer, $$props) {
       $$renderer2.push("<!--[-->");
       $$renderer2.push(`<a${attributes({
         href,
-        class: clsx$1(cn(buttonVariants({ variant, size }), className)),
+        class: clsx(cn(buttonVariants({ variant, size }), className)),
         ...restProps
       })}>`);
       children?.($$renderer2);
@@ -54,7 +49,7 @@ function Button($$renderer, $$props) {
       $$renderer2.push(`<button${attributes({
         type,
         disabled,
-        class: clsx$1(cn(buttonVariants({ variant, size }), className)),
+        class: clsx(cn(buttonVariants({ variant, size }), className)),
         ...restProps
       })}>`);
       children?.($$renderer2);
@@ -64,6 +59,5 @@ function Button($$renderer, $$props) {
   });
 }
 export {
-  Button as B,
-  cn as c
+  Button as B
 };

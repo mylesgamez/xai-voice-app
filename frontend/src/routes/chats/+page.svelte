@@ -33,24 +33,23 @@
 </script>
 
 <div class="min-h-screen bg-background">
-  <div class="container max-w-2xl py-8">
-    <div class="mb-6 flex items-center justify-between">
+  <div class="container max-w-2xl py-8 px-4">
+    <div class="mb-6">
       <h1 class="text-2xl font-bold">Conversations</h1>
-      <Button href="/dashboard" variant="outline">Back to Dashboard</Button>
     </div>
 
     {#if !data.phoneNumber}
       <Card.Root>
         <Card.Content class="py-8 text-center">
           <p class="text-muted-foreground">Please connect your phone number first.</p>
-          <Button href="/dashboard" class="mt-4">Go to Dashboard</Button>
+          <Button href="/profile" class="mt-4">Go to Profile</Button>
         </Card.Content>
       </Card.Root>
     {:else if data.conversations.length === 0}
       <Card.Root>
         <Card.Content class="py-8 text-center">
           <p class="text-muted-foreground">No conversations yet. Make a phone call to start!</p>
-          <Button href="/dashboard" class="mt-4">Go to Dashboard</Button>
+          <Button href="/profile" class="mt-4">View Profile</Button>
         </Card.Content>
       </Card.Root>
     {:else}
