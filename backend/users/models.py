@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.conf import settings
 from cryptography.fernet import Fernet
@@ -63,3 +64,52 @@ class XUser(models.Model):
         """Decrypt and return refresh token"""
         f = self._get_fernet()
         return f.decrypt(bytes(self.refresh_token_encrypted)).decode()
+
+
+class Conversation(models.Model):
+    """Stores conversation sessions (phone calls or text chats)"""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    x_user = models.ForeignKey(XUser, on_delete=models.CASCADE, related_name='conversations')
+    call_id = models.CharField(max_length=100, null=True, blank=True, db_index=True)
+    title = models.CharField(max_length=255, default='Phone Call')
+    started_at = models.DateTimeField(auto_now_add=True)
+    ended_at = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Conversation'
+        verbose_name_plural = 'Conversations'
+        ordering = ['-started_at']
+
+    def __str__(self):
+        return f"{self.title} - {self.x_user.x_username} ({self.started_at.strftime('%Y-%m-%d %H:%M')})"
+
+
+class Message(models.Model):
+    """Individual messages within a conversation"""
+
+    ROLE_CHOICES = [
+        ('user', 'User'),
+        ('assistant', 'Assistant'),
+        ('system', 'System'),
+    ]
+    SOURCE_CHOICES = [
+        ('voice', 'Voice'),
+        ('text', 'Text'),
+    ]
+
+    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    content = models.TextField()
+    source = models.CharField(max_length=10, choices=SOURCE_CHOICES, default='voice')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Message'
+        verbose_name_plural = 'Messages'
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"{self.role}: {self.content[:50]}..."

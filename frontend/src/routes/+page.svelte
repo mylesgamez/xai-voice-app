@@ -10,6 +10,8 @@
       return;
     }
     isLoading = true;
+    // Save phone number to localStorage for later use
+    localStorage.setItem('phoneNumber', phoneNumber);
     // Redirect to Django OAuth start
     window.location.href = `${API_URL}/api/auth/x/start?phone=${encodeURIComponent(phoneNumber)}`;
   }

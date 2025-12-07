@@ -1,4 +1,10 @@
 {
 	"/": [],
+	"/chats": [
+		"src/routes/chats/+page.ts"
+	],
+	"/chats/[id]": [
+		"src/routes/chats/[id]/+page.ts"
+	],
 	"/dashboard": []
 }
