@@ -71,6 +71,10 @@ class GetUserTokenView(APIView):
             'x_user_id': x_user.x_user_id,
             'x_username': x_user.x_username,
             'x_name': x_user.x_name,
+            # Seeded data for personalized greetings (top 10 of each)
+            'following': x_user.following_data[:10] if x_user.following_data else [],
+            'liked_tweets': x_user.liked_tweets_data[:10] if x_user.liked_tweets_data else [],
+            'seeded_at': x_user.seeded_at.isoformat() if x_user.seeded_at else None,
         })
 
 

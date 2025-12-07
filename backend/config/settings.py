@@ -107,7 +107,7 @@ REST_FRAMEWORK = {
 X_CLIENT_ID = os.environ.get('X_CLIENT_ID', '')
 X_CLIENT_SECRET = os.environ.get('X_CLIENT_SECRET', '')
 X_REDIRECT_URI = os.environ.get('X_REDIRECT_URI', 'http://localhost:8000/api/auth/x/callback')
-X_SCOPES = 'tweet.read tweet.write users.read follows.read follows.write dm.read dm.write offline.access'
+X_SCOPES = 'tweet.read tweet.write users.read follows.read follows.write dm.read dm.write like.read offline.access'
 
 # Token encryption key (generate with: python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())")
 ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY', '')

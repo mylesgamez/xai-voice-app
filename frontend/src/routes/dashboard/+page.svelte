@@ -19,7 +19,7 @@
 
       <div class="bg-gray-700/50 rounded-xl p-6 mb-6">
         <p class="text-sm text-gray-400 mb-2">Call this number to get started:</p>
-        <p class="text-3xl font-bold text-white tracking-wide">+1 (XXX) XXX-XXXX</p>
+        <p class="text-3xl font-bold text-white tracking-wide">+1 (628) 200-3655</p>
         <p class="text-xs text-gray-500 mt-2">Replace with your Twilio number</p>
       </div>
 

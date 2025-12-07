@@ -121,6 +121,11 @@ class OAuthCallbackView(View):
             )
             x_user.set_tokens(access_token, refresh_token)
             x_user.save()
+
+            # Seed user data (following, liked tweets) for personalized experience
+            from users.seeding import seed_user_data
+            seed_user_data(x_user)
+
         except Exception as e:
             return HttpResponseRedirect(f'{settings.FRONTEND_URL}/?error=Failed to save user: {str(e)}')
 

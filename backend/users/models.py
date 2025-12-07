@@ -22,6 +22,15 @@ class XUser(models.Model):
     token_expires_at = models.DateTimeField()
     scopes = models.TextField(blank=True)  # Space-separated scopes
 
+    # Seeded data (cached from X API after OAuth)
+    following_data = models.JSONField(default=list, blank=True)
+    # Format: [{"id": "123", "username": "elonmusk", "name": "Elon Musk"}, ...]
+
+    liked_tweets_data = models.JSONField(default=list, blank=True)
+    # Format: [{"id": "123", "text": "...", "author_username": "...", "author_name": "..."}, ...]
+
+    seeded_at = models.DateTimeField(null=True, blank=True)
+
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
