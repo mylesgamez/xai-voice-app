@@ -1,5 +1,7 @@
 # AI Newscaster
 
+## Demo Link: https://www.youtube.com/watch?v=XFY5GU1F7nc
+
 A voice-powered AI assistant that delivers personalized news and integrates with X (Twitter). Call in via phone and interact with your X account hands-free.
 
 ## Features
