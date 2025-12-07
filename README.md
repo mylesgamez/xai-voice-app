@@ -124,7 +124,7 @@ The frontend will be available at `http://localhost:5173`.
 
 ### 4. Voice Server Setup
 
-See the [xai-voice-examples-main](https://github.com/your-username/xai-voice-examples-main) repository for voice server setup.
+See the [xai-voice-examples-main](https://github.com/mylesgamez/xai-voice-agent) repository for voice server setup.
 
 ## Project Structure
 
