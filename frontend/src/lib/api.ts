@@ -17,6 +17,7 @@ export interface Message {
 export interface ConversationSummary {
   id: string;
   title: string;
+  tags: string[];
   call_id: string | null;
   started_at: string;
   ended_at: string | null;

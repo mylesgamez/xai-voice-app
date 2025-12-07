@@ -5,6 +5,7 @@ from .views import (
     ConversationListCreateView,
     ConversationDetailView,
     ConversationMessagesView,
+    GenerateTitleView,
 )
 
 urlpatterns = [
@@ -17,4 +18,5 @@ conversation_urlpatterns = [
     path('', ConversationListCreateView.as_view(), name='conversation_list_create'),
     path('<uuid:conversation_id>', ConversationDetailView.as_view(), name='conversation_detail'),
     path('<uuid:conversation_id>/messages', ConversationMessagesView.as_view(), name='conversation_messages'),
+    path('<uuid:conversation_id>/generate-title', GenerateTitleView.as_view(), name='generate_title'),
 ]

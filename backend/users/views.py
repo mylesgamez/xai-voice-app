@@ -2,6 +2,7 @@
 User API views - provides token lookup for the Node.js telephony server
 and conversation management for the web UI.
 """
+import json
 from datetime import timedelta
 
 from rest_framework.views import APIView
@@ -140,6 +141,7 @@ class ConversationListCreateView(APIView):
             data.append({
                 'id': str(conv.id),
                 'title': conv.title,
+                'tags': conv.tags or [],
                 'call_id': conv.call_id,
                 'started_at': conv.started_at.isoformat(),
                 'ended_at': conv.ended_at.isoformat() if conv.ended_at else None,
@@ -331,3 +333,52 @@ class ConversationMessagesView(APIView):
                 response_data['error'] = f'Failed to generate reply: {str(e)}'
 
         return Response(response_data, status=status.HTTP_201_CREATED)
+
+
+class GenerateTitleView(APIView):
+    """
+    POST /api/conversations/{id}/generate-title
+
+    Generate a title and topic tags for a conversation using Grok.
+    Called automatically when a phone call ends.
+    """
+
+    def post(self, request, conversation_id):
+        conversation = get_object_or_404(Conversation, id=conversation_id)
+
+        # Get AI messages from conversation (first 5 for context)
+        ai_messages = conversation.messages.filter(role='assistant')[:5]
+        transcript = "\n".join([m.content[:200] for m in ai_messages])
+
+        if not transcript:
+            return Response({'title': 'Phone Call', 'tags': []})
+
+        # Call Grok to generate title and tags
+        prompt = f"""You are categorizing a saved conversation for a news assistant app.
+
+Given this transcript, generate:
+1. A short, descriptive title under 60 characters (no quotes, no emojis)
+2. 1-2 topic tags from this list: AI, Markets, Politics, Tech, Sports, Entertainment, Your Circle, Breaking News
+
+Respond in JSON format only:
+{{"title": "your title here", "tags": ["Tag1", "Tag2"]}}
+
+Transcript:
+{transcript}"""
+
+        try:
+            response = send_to_grok([{'role': 'user', 'content': prompt}])
+
+            # Parse JSON response
+            data = json.loads(response.strip())
+            title = data.get('title', 'Phone Call')[:60]
+            tags = data.get('tags', [])[:2]  # Max 2 tags
+        except (json.JSONDecodeError, AttributeError, Exception):
+            title = 'Phone Call'
+            tags = []
+
+        conversation.title = title
+        conversation.tags = tags
+        conversation.save()
+
+        return Response({'title': title, 'tags': tags})

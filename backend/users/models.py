@@ -73,6 +73,7 @@ class Conversation(models.Model):
     x_user = models.ForeignKey(XUser, on_delete=models.CASCADE, related_name='conversations')
     call_id = models.CharField(max_length=100, null=True, blank=True, db_index=True)
     title = models.CharField(max_length=255, default='Phone Call')
+    tags = models.JSONField(default=list, blank=True)  # ["AI", "Markets", "Your Circle"]
     started_at = models.DateTimeField(auto_now_add=True)
     ended_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -33,63 +33,99 @@
 </script>
 
 <div class="min-h-screen bg-background">
-  <div class="container max-w-2xl py-8 px-4">
-    <div class="mb-6">
-      <h1 class="text-2xl font-bold">Conversations</h1>
+  <div class="max-w-3xl mx-auto px-6 py-8">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h1 class="text-2xl font-bold">Conversations</h1>
+        <p class="text-sm text-muted-foreground">Briefings saved from your calls</p>
+      </div>
+      <a
+        href="tel:+16282003655"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium hover:bg-primary/90 transition"
+      >
+        <span>📞</span> Call now: +1 (628) 200-3655
+      </a>
     </div>
 
     {#if !data.phoneNumber}
-      <Card.Root>
-        <Card.Content class="py-8 text-center">
-          <p class="text-muted-foreground">Please connect your phone number first.</p>
-          <Button href="/profile" class="mt-4">Go to Profile</Button>
+      <!-- No phone number connected -->
+      <Card.Root class="rounded-2xl border-dashed border-2 border-slate-200">
+        <Card.Content class="py-12 text-center">
+          <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-2xl">📱</span>
+          </div>
+          <p class="text-muted-foreground mb-1">Phone number required</p>
+          <p class="text-sm text-muted-foreground mb-4">Connect your phone number to start using AI Newscaster</p>
+          <Button href="/profile" class="rounded-full">Go to Setup</Button>
         </Card.Content>
       </Card.Root>
     {:else if data.conversations.length === 0}
-      <Card.Root>
-        <Card.Content class="py-8 text-center">
-          <p class="text-muted-foreground">No conversations yet. Make a phone call to start!</p>
-          <Button href="/profile" class="mt-4">View Profile</Button>
+      <!-- No conversations empty state -->
+      <Card.Root class="rounded-2xl border-dashed border-2 border-slate-200">
+        <Card.Content class="py-12 text-center">
+          <div class="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <span class="text-2xl">🎙️</span>
+          </div>
+          <p class="text-muted-foreground mb-1">No conversations yet</p>
+          <p class="text-sm text-muted-foreground mb-4">Call AI Newscaster to see your briefings here</p>
+          <a
+            href="tel:+16282003655"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-full text-sm font-medium"
+          >
+            <span>📞</span> +1 (628) 200-3655
+          </a>
         </Card.Content>
       </Card.Root>
     {:else}
+      <!-- Conversation list -->
       <div class="space-y-3">
         {#each data.conversations as conversation}
           <Card.Root
-            class="cursor-pointer transition-colors hover:bg-accent/50"
+            class="cursor-pointer rounded-2xl border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-px transition-all duration-200"
             onclick={() => goto(`/chats/${conversation.id}`)}
           >
             <Card.Header class="pb-2">
-              <div class="flex items-center justify-between">
-                <Card.Title class="text-lg">{conversation.title}</Card.Title>
-                <span class="text-sm text-muted-foreground">
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="text-lg flex-shrink-0">🛰️</span>
+                  <Card.Title class="text-base font-semibold truncate">{conversation.title}</Card.Title>
+                </div>
+                <span class="text-xs text-muted-foreground whitespace-nowrap">
                   {formatDate(conversation.started_at)}
                 </span>
               </div>
-              <Card.Description>
-                {conversation.message_count} message{conversation.message_count !== 1 ? 's' : ''}
+              <div class="flex items-center gap-2 mt-1 ml-7">
+                <span class="text-xs text-muted-foreground">
+                  {conversation.message_count} message{conversation.message_count !== 1 ? 's' : ''}
+                </span>
+                <span class="text-xs text-muted-foreground">·</span>
                 {#if conversation.ended_at}
-                  <span class="ml-2 text-xs text-green-600">Completed</span>
+                  <span class="text-xs text-green-600 font-medium">Completed</span>
                 {:else}
-                  <span class="ml-2 text-xs text-yellow-600">In progress</span>
+                  <span class="text-xs text-yellow-600 font-medium">In progress</span>
                 {/if}
-              </Card.Description>
+              </div>
             </Card.Header>
-            {#if conversation.last_message}
-              <Card.Content class="pt-0">
-                <p class="text-sm text-muted-foreground">
+            <Card.Content class="pt-0 space-y-2 ml-7">
+              <!-- Topic tags -->
+              {#if conversation.tags && conversation.tags.length > 0}
+                <div class="flex gap-1.5">
+                  {#each conversation.tags as tag}
+                    <span class="px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full text-xs font-medium">{tag}</span>
+                  {/each}
+                </div>
+              {/if}
+              <!-- Last message preview -->
+              {#if conversation.last_message}
+                <p class="text-sm text-muted-foreground line-clamp-1">
                   <span class="font-medium">
-                    {conversation.last_message.role === 'user' ? 'You' : 'AI'}:
+                    {conversation.last_message.role === 'assistant' ? 'AI' : 'You'}:
                   </span>
-                  {truncate(conversation.last_message.content, 100)}
-                  {#if conversation.last_message.source === 'voice'}
-                    <span class="ml-1" title="Voice message">🎤</span>
-                  {:else}
-                    <span class="ml-1" title="Text message">💬</span>
-                  {/if}
+                  {truncate(conversation.last_message.content, 80)}
                 </p>
-              </Card.Content>
-            {/if}
+              {/if}
+            </Card.Content>
           </Card.Root>
         {/each}
       </div>

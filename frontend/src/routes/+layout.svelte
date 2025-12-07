@@ -20,22 +20,24 @@
   {@render children()}
 {:else}
   <Sidebar.Provider>
-    <Sidebar.Root>
-      <Sidebar.Header>
-        <div class="flex items-center gap-2">
-          <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-            </svg>
+    <Sidebar.Root class="bg-slate-50 border-r border-slate-200">
+      <Sidebar.Header class="px-4 py-4">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 bg-blue-500 rounded-xl flex items-center justify-center shadow-sm">
+            <span class="text-white text-lg">📡</span>
           </div>
-          <span class="font-semibold">AI Newscaster</span>
+          <span class="font-semibold text-slate-900">AI Newscaster</span>
         </div>
       </Sidebar.Header>
-      <Sidebar.Content>
+      <Sidebar.Content class="px-2">
         <Sidebar.Group>
           <Sidebar.Menu>
             <Sidebar.MenuItem>
-              <Sidebar.MenuButton href="/chats" isActive={$page.url.pathname.startsWith('/chats')}>
+              <Sidebar.MenuButton
+                href="/chats"
+                isActive={$page.url.pathname.startsWith('/chats')}
+                class="rounded-lg transition-all duration-200 data-[active=true]:bg-slate-900 data-[active=true]:text-white data-[active=true]:shadow-sm hover:bg-slate-100"
+              >
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
@@ -43,29 +45,39 @@
               </Sidebar.MenuButton>
             </Sidebar.MenuItem>
             <Sidebar.MenuItem>
-              <Sidebar.MenuButton href="/profile" isActive={$page.url.pathname === '/profile'}>
+              <Sidebar.MenuButton
+                href="/profile"
+                isActive={$page.url.pathname === '/profile'}
+                class="rounded-lg transition-all duration-200 data-[active=true]:bg-slate-900 data-[active=true]:text-white data-[active=true]:shadow-sm hover:bg-slate-100"
+              >
                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                Profile
+                Setup
               </Sidebar.MenuButton>
             </Sidebar.MenuItem>
           </Sidebar.Menu>
         </Sidebar.Group>
       </Sidebar.Content>
-      <Sidebar.Footer>
+      <Sidebar.Footer class="px-4 py-4 border-t border-slate-200">
         {#if $auth.isConnected}
-          <div class="flex items-center gap-2">
-            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-              <span class="text-xs font-medium">{$auth.xName?.charAt(0) || 'U'}</span>
+          <div class="flex items-center gap-3">
+            <div class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-200">
+              <span class="text-sm font-medium text-slate-700">{$auth.xName?.charAt(0) || 'U'}</span>
             </div>
-            <div class="flex flex-col">
-              <span class="text-sm font-medium">{$auth.xName}</span>
-              <span class="text-xs text-muted-foreground">@{$auth.xUsername}</span>
+            <div class="flex flex-col min-w-0">
+              <span class="text-sm font-medium text-slate-900 truncate">{$auth.xName}</span>
+              <span class="text-xs text-muted-foreground truncate">@{$auth.xUsername}</span>
             </div>
           </div>
         {:else if !$auth.loading}
-          <a href="/profile" class="text-sm text-muted-foreground hover:text-foreground">
+          <a href="/profile" class="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <div class="flex h-9 w-9 items-center justify-center rounded-full bg-slate-200">
+              <svg class="h-4 w-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
             Connect X account
           </a>
         {/if}
