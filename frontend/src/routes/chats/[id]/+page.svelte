@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation';
   import { Button } from '$lib/components/ui/button';
   import { Input } from '$lib/components/ui/input';
-  import { sendMessage, type Message } from '$lib/api';
+  import { sendMessage, getConversation, type Message } from '$lib/api';
 
   let { data } = $props();
 
@@ -12,11 +12,76 @@
   let sending = $state(false);
   let messagesContainer: HTMLDivElement;
 
+  // Polling state for live updates
+  let pollInterval: ReturnType<typeof setInterval> | undefined;
+  let isPolling = $state(false);
+
+  // Determine if call is active (not ended)
+  let isCallActive = $derived(data.conversation && !data.conversation.ended_at);
+
   // Initialize messages when data changes
   $effect(() => {
     if (data.conversation?.messages) {
       messages = [...data.conversation.messages];
     }
+  });
+
+  // Poll for new messages while call is active
+  $effect(() => {
+    // Clean up any existing interval
+    if (pollInterval) {
+      clearInterval(pollInterval);
+      pollInterval = undefined;
+    }
+
+    // Only poll if call is active
+    if (!isCallActive || !data.conversation || !data.phoneNumber) {
+      isPolling = false;
+      return;
+    }
+
+    isPolling = true;
+
+    const poll = async () => {
+      try {
+        const updated = await getConversation(data.conversation!.id, data.phoneNumber!);
+
+        // Update messages if there are new ones
+        if (updated.messages.length > messages.length) {
+          messages = updated.messages;
+          // Auto-scroll to bottom
+          setTimeout(scrollToBottom, 50);
+        }
+
+        // Check if call ended
+        if (updated.ended_at) {
+          // Call ended, stop polling
+          if (pollInterval) {
+            clearInterval(pollInterval);
+            pollInterval = undefined;
+          }
+          isPolling = false;
+          // Update conversation state to reflect ended status
+          data = { ...data, conversation: updated };
+        }
+      } catch (e) {
+        console.error('Failed to poll messages:', e);
+      }
+    };
+
+    // Poll every 2 seconds
+    pollInterval = setInterval(poll, 2000);
+
+    // Initial poll
+    poll();
+
+    // Cleanup on unmount
+    return () => {
+      if (pollInterval) {
+        clearInterval(pollInterval);
+        pollInterval = undefined;
+      }
+    };
   });
 
   function formatTime(isoString: string): string {
@@ -77,7 +142,14 @@
         <h1 class="font-semibold truncate">{data.conversation?.title || 'Conversation'}</h1>
         {#if data.conversation}
           <p class="text-xs text-muted-foreground">
-            {messages.length} message{messages.length !== 1 ? 's' : ''} · {data.conversation.ended_at ? 'Completed' : 'In progress'}
+            {messages.length} message{messages.length !== 1 ? 's' : ''} ·
+            {#if isPolling}
+              <span class="text-green-600 font-medium">● Live</span>
+            {:else if data.conversation.ended_at}
+              Completed
+            {:else}
+              In progress
+            {/if}
           </p>
         {/if}
       </div>
@@ -101,10 +173,26 @@
         {:else if messages.length === 0}
           <div class="py-12 text-center">
             <div class="w-12 h-12 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span class="text-2xl">💬</span>
+              {#if isPolling}
+                <span class="text-2xl animate-pulse">📞</span>
+              {:else}
+                <span class="text-2xl">💬</span>
+              {/if}
             </div>
-            <p class="text-muted-foreground mb-1">No messages yet</p>
-            <p class="text-sm text-muted-foreground">Start the conversation below</p>
+            <p class="text-muted-foreground mb-1">
+              {#if isPolling}
+                Waiting for call to start...
+              {:else}
+                No messages yet
+              {/if}
+            </p>
+            <p class="text-sm text-muted-foreground">
+              {#if isPolling}
+                Transcripts will appear here as you speak
+              {:else}
+                Start the conversation below
+              {/if}
+            </p>
           </div>
         {:else}
           {#each messages as message (message.id)}
